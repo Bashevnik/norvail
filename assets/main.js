@@ -176,6 +176,10 @@
     return "product.html?product=" + encodeURIComponent(product.slug);
   }
 
+  function formatUah(value) {
+    return "₴" + value.toLocaleString("en-US") + ".00";
+  }
+
   function getProductFromLocation() {
     var params = new URLSearchParams(window.location.search);
     var slug = params.get("product") || PRODUCTS[0].slug;
@@ -207,7 +211,7 @@
     var copy = document.createElement("div");
     copy.appendChild(createElement("h2", "", product.name));
     info.appendChild(copy);
-    info.appendChild(createElement("strong", "", product.price));
+    info.appendChild(createElement("strong", "", formatUah(product.priceValue)));
     link.appendChild(info);
 
     return link;
@@ -495,7 +499,7 @@
       return sum + product.priceValue;
     }, 0);
     document.querySelectorAll("[data-cart-subtotal], [data-cart-total]").forEach(function (node) {
-      node.textContent = "₴" + total.toLocaleString("en-US") + ".00";
+      node.textContent = formatUah(total);
     });
   }
 
