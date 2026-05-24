@@ -19,10 +19,10 @@
 html {
   background: var(--color-bg);
   color: var(--color-text);
-  overscroll-behavior: none;
+  overscroll-behavior-y: auto;
   scroll-behavior: smooth;
-  scrollbar-width: none;
-  -ms-overflow-style: none;
+  scrollbar-color: rgba(255, 255, 255, 0.35) transparent;
+  scrollbar-width: thin;
 }
 
 body {
@@ -35,19 +35,20 @@ body {
   font-size: 15px;
   line-height: 1.8;
   letter-spacing: 0.01em;
-  overscroll-behavior: none;
-  scrollbar-width: none;
-  -ms-overflow-style: none;
+  overscroll-behavior-y: auto;
+  touch-action: pan-x pan-y pinch-zoom;
   -webkit-font-smoothing: antialiased;
   text-rendering: geometricPrecision;
 }
 
 html::-webkit-scrollbar,
-body::-webkit-scrollbar,
-*::-webkit-scrollbar {
-  width: 0;
-  height: 0;
-  display: none;
+body::-webkit-scrollbar {
+  width: 8px;
+}
+
+html::-webkit-scrollbar-thumb,
+body::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.28);
 }
 
 body.menu-open {
@@ -539,7 +540,6 @@ select,
   width: 100%;
   height: 100%;
   object-fit: cover;
-  filter: grayscale(1) contrast(1.16);
 }
 
 .hero-overlay {
@@ -741,23 +741,27 @@ select,
 .product-grid {
   display: grid;
   grid-auto-flow: dense;
-  grid-template-columns: 1fr;
-  gap: clamp(14px, 2vw, 22px);
-  background: transparent;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(22px, 3.2vw, 48px) clamp(16px, 2.6vw, 40px);
+  background: #ffffff;
   border: 0;
+  padding: clamp(14px, 2.2vw, 28px);
 }
 
 .product-card {
   display: grid;
   align-content: start;
-  gap: 16px;
+  gap: 12px;
   min-width: 0;
-  padding: 0 0 22px;
-  border: 1px solid var(--color-border);
-  background: var(--color-surface);
-  color: var(--color-text);
+  padding: 0;
+  border: 0;
+  background: #ffffff;
+  color: #101010;
   overflow: hidden;
-  transform: translate3d(0, 0, 0);
+  transform: none;
+  transition: color var(--transition-fast), opacity var(--transition-fast);
+  touch-action: pan-y pinch-zoom;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .product-card__media,
@@ -769,8 +773,8 @@ select,
 }
 
 .product-card__media {
-  aspect-ratio: 4 / 5;
-  border-bottom: 1px solid var(--color-border);
+  aspect-ratio: 1 / 1;
+  border-bottom: 0;
 }
 
 .product-photo-frame {
@@ -780,30 +784,54 @@ select,
   background: transparent;
 }
 
+.product-card .product-photo-frame,
+.product-card .product-photo-frame img {
+  touch-action: pan-y pinch-zoom;
+}
+
 .product-photo-frame img,
 .insta-tile img,
 .thumb-button img {
   width: 100%;
   height: 100%;
-  object-fit: cover;
-  filter: grayscale(1) contrast(1.1);
+  object-fit: contain;
+  padding: clamp(10px, 2vw, 28px);
   transform: translate3d(0, 0, 0) scale(1);
-  transition: filter var(--transition-fast), transform var(--transition-fast);
+  transition: transform var(--transition-fast);
+  user-select: none;
+  -webkit-user-drag: none;
 }
 
-.product-card:hover .product-photo-frame img,
-.product-card:focus-visible .product-photo-frame img,
-.insta-tile:hover img,
-.thumb-button:hover img {
-  filter: grayscale(0) contrast(1.04);
-  transform: scale(1.035);
+@media (hover: hover) and (pointer: fine) {
+  .product-card:hover .product-photo-frame img,
+  .product-card:focus-visible .product-photo-frame img,
+  .insta-tile:hover img,
+  .thumb-button:hover img {
+    transform: scale(1.035);
+  }
+}
+
+@media (hover: none), (pointer: coarse) {
+  .product-card .product-photo-frame img {
+    transition-duration: 0.001ms;
+  }
+}
+
+.insta-tile img,
+.thumb-button img {
+  object-fit: cover;
+  padding: 0;
+}
+
+.featured-drop__media img {
+  object-fit: cover;
+  padding: 0;
 }
 
 .product-art {
   position: relative;
   margin: 0;
   background: #030303;
-  filter: grayscale(1) contrast(1.12);
   transform: translate3d(0, 0, 0);
   transition: all 0.25s ease;
 }
@@ -921,7 +949,7 @@ select,
 .insta-tile:hover,
 .thumb-button:hover .product-art,
 .product-card:focus-visible .product-art {
-  filter: grayscale(0) contrast(1.05);
+  filter: none;
 }
 
 .product-card:hover .product-art::before,
@@ -931,19 +959,20 @@ select,
 }
 
 .product-card__info {
-  justify-content: space-between;
-  gap: 16px;
-  padding-inline: 18px;
+  display: grid;
+  align-items: start;
+  gap: 4px;
+  padding: 0 0 2px;
 }
 
 .product-card__info h2 {
-  margin: 0 0 6px;
-  font-family: var(--font-heading);
-  font-size: 22px;
-  font-weight: 700;
-  line-height: 0.95;
-  letter-spacing: 0.02em;
-  text-transform: uppercase;
+  margin: 0;
+  font-family: var(--font-body);
+  font-size: clamp(14px, 1.6vw, 20px);
+  font-weight: 500;
+  line-height: 1.2;
+  letter-spacing: 0;
+  text-transform: none;
 }
 
 .product-card__info p {
@@ -958,6 +987,12 @@ select,
 .summary-row strong {
   font-feature-settings: "tnum" 1;
   white-space: nowrap;
+}
+
+.product-card__info strong {
+  color: #101010;
+  font-size: clamp(13px, 1.3vw, 18px);
+  font-weight: 500;
 }
 
 .instagram-section {
@@ -993,8 +1028,10 @@ select,
   padding-inline: max(16px, calc((100vw - 1440px) / 2 + 16px));
   scroll-behavior: smooth;
   scroll-padding-inline: max(16px, calc((100vw - 1440px) / 2 + 16px));
-  scroll-snap-type: x mandatory;
+  scroll-snap-type: x proximity;
   scrollbar-width: none;
+  touch-action: pan-x pan-y pinch-zoom;
+  -webkit-overflow-scrolling: touch;
 }
 
 .instagram-grid::-webkit-scrollbar {
@@ -1275,7 +1312,9 @@ select {
   overflow-x: auto;
   background: transparent;
   border: 0;
-  scroll-snap-type: x mandatory;
+  scroll-snap-type: x proximity;
+  touch-action: pan-x pan-y pinch-zoom;
+  -webkit-overflow-scrolling: touch;
 }
 
 .thumb-button {
@@ -1570,7 +1609,6 @@ select {
   height: 80px;
   border: 1px solid var(--color-border);
   object-fit: cover;
-  filter: grayscale(1) contrast(1.12);
 }
 
 .cart-item-info h2 {
@@ -1665,7 +1703,6 @@ select {
   width: 44px;
   height: 44px;
   object-fit: contain;
-  filter: grayscale(1);
 }
 
 .footer-icon {
@@ -1850,16 +1887,7 @@ select {
   }
 
   .product-grid-home {
-    display: flex;
-    gap: 14px;
-    overflow-x: auto;
-    background: transparent;
-    scroll-snap-type: x mandatory;
-  }
-
-  .product-grid-home .product-card {
-    flex: 0 0 82%;
-    scroll-snap-align: start;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 
   .featured-drop {

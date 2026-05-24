@@ -30,18 +30,18 @@
   var PRODUCTS = [
     {
       slug: "black-imprint-noirveil-pants",
-      name: "BLACK IMPRINT NOIRVEIL PANTS",
+      name: "Black Imprint Noirveil Pants",
       category: "Pants",
       status: "Available",
       sizes: ["S", "M"],
-      price: "1400 UAH",
+      price: "₴1,400.00",
       priceValue: 1400,
       images: [
         "products/BLACK IMPRINT NOIRVEIL PANTS.jpg",
         "products/BLACK IMPRINT NOIRVEIL PANTS2.jpg",
         "products/BLACK IMPRINT NOIRVEIL PANTS3.jpg"
       ],
-      description: "Black imprint pants with a daily fit, bold logo placement, and the stripped-back NOIRVEIL dark streetwear mood.",
+      description: "Black imprint pants with a daily fit, bold logo placement, and the stripped-back NOIRVEIL streetwear mood.",
       details: [
         "Size: S / M.",
         "Material information and measurements for each size are provided by private message on request: @noirveil_dm.",
@@ -51,11 +51,11 @@
     },
     {
       slug: "noirveil-141",
-      name: "NOIRVEIL \"141\"",
+      name: "Noirveil 141",
       category: "Pants",
       status: "Available",
       sizes: ["S", "M"],
-      price: "1200 UAH",
+      price: "₴1,200.00",
       priceValue: 1200,
       images: [
         "products/141.jpg",
@@ -66,18 +66,18 @@
       description: "NOIRVEIL 141 piece with a compact black silhouette and everyday sizing support by DM.",
       details: [
         "Size: S / M.",
-        "Щоб взнати розмірну сітку, пишіть в особисті: підберемо під кожного з вас.",
+        "Write to @noirveil_dm for measurements and sizing help.",
         "For orders: @noirveil_dm.",
         "Payment: full payment or 50% prepayment."
       ]
     },
     {
       slug: "tracksuit-noirveil-reflect",
-      name: "Tracksuit Noirveil Reflect",
+      name: "Noirveil Reflect Tracksuit",
       category: "Tracksuit",
       status: "Available",
       sizes: ["S", "M", "L"],
-      price: "from 1950 UAH",
+      price: "from ₴1,950.00",
       priceValue: 1950,
       images: [
         "products/Tracksuit Noirveil Reflect.jpg",
@@ -90,8 +90,8 @@
       ],
       description: "Reflective NOIRVEIL tracksuit in heavy cotton fleece with embroidered lettering and a denim logo patch on the back pocket.",
       details: [
-        "Hoodie: 1950 UAH / 41 EUR. Pants: 1950 UAH / 41 EUR. Full tracksuit: 4000 UAH / 79 EUR.",
-        "Footer 3-thread penye, density 390. 100% cotton.",
+        "Hoodie: ₴1,950 / 41 EUR. Pants: ₴1,950 / 41 EUR. Full tracksuit: ₴4,000 / 79 EUR.",
+        "Heavy 390 gsm three-thread cotton fleece.",
         "Reflective elements, embroidered text, denim logo on the back pocket, comfortable everyday fit.",
         "Worldwide shipping. Orders in Ukraine ship in 1-2 days, with possible delay in case of emergency.",
         "Payment: full payment or 50% prepayment."
@@ -99,11 +99,11 @@
     },
     {
       slug: "shorts-sakura",
-      name: "Shorts Sakura",
+      name: "Sakura Shorts",
       category: "Shorts",
       status: "Available",
       sizes: ["S", "M", "L"],
-      price: "1200 UAH | 24 EUR",
+      price: "₴1,200.00 | 24 EUR",
       priceValue: 1200,
       images: [
         "products/Sakura.jpg",
@@ -121,11 +121,11 @@
     },
     {
       slug: "noirveil-first-tees",
-      name: "NOIRVEIL First T-Shirts",
+      name: "Noirveil First T-Shirts",
       category: "Tops",
       status: "Pre-order",
       sizes: ["S", "M", "L"],
-      price: "950 UAH | 18 EUR",
+      price: "₴950.00 | 18 EUR",
       priceValue: 950,
       images: [
         "products/футболки Noirveil.jpg",
@@ -176,10 +176,6 @@
     return "product.html?product=" + encodeURIComponent(product.slug);
   }
 
-  function productMeta(product) {
-    return product.category + " / " + product.sizes.join("/");
-  }
-
   function getProductFromLocation() {
     var params = new URLSearchParams(window.location.search);
     var slug = params.get("product") || PRODUCTS[0].slug;
@@ -193,14 +189,14 @@
     img.src = src;
     img.alt = product.name;
     img.loading = loading || "lazy";
+    img.draggable = false;
     parent.appendChild(img);
     return img;
   }
 
-  function createProductCard(product, index) {
-    var link = createElement("a", "product-card page-link reveal");
+  function createProductCard(product) {
+    var link = createElement("a", "product-card page-link");
     link.href = productUrl(product);
-    link.style.setProperty("--reveal-index", String(index));
     link.setAttribute("aria-label", product.name);
 
     var media = createElement("figure", "product-card__media product-photo-frame");
@@ -210,7 +206,6 @@
     var info = createElement("div", "product-card__info");
     var copy = document.createElement("div");
     copy.appendChild(createElement("h2", "", product.name));
-    copy.appendChild(createElement("p", "", productMeta(product)));
     info.appendChild(copy);
     info.appendChild(createElement("strong", "", product.price));
     link.appendChild(info);
@@ -224,8 +219,8 @@
       return;
     }
     grid.innerHTML = "";
-    products.forEach(function (product, index) {
-      grid.appendChild(createProductCard(product, index));
+    products.forEach(function (product) {
+      grid.appendChild(createProductCard(product));
     });
   }
 
@@ -500,7 +495,7 @@
       return sum + product.priceValue;
     }, 0);
     document.querySelectorAll("[data-cart-subtotal], [data-cart-total]").forEach(function (node) {
-      node.textContent = total + " UAH";
+      node.textContent = "₴" + total.toLocaleString("en-US") + ".00";
     });
   }
 
@@ -764,9 +759,6 @@
     if (sortSelect) {
       sortSelect.addEventListener("change", function () {
         renderCatalog(sortSelect.value);
-        document.querySelectorAll(".catalog-grid .reveal").forEach(function (node) {
-          node.classList.add("is-visible");
-        });
       });
     }
 
