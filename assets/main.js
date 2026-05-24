@@ -283,7 +283,9 @@
       return;
     }
     container.innerHTML = "";
-    EDITORIAL_IMAGES.forEach(function (image, index) {
+    var images = container.hasAttribute("data-auto-slider") ? EDITORIAL_IMAGES.concat(EDITORIAL_IMAGES) : EDITORIAL_IMAGES;
+    container.setAttribute("data-slide-count", String(EDITORIAL_IMAGES.length));
+    images.forEach(function (image, index) {
       var link = createElement("a", tileClass + " reveal");
       link.href = SOCIAL_LINKS.instagram;
       link.style.setProperty("--reveal-index", String(index));
@@ -295,6 +297,49 @@
       img.loading = "lazy";
       link.appendChild(img);
       container.appendChild(link);
+    });
+  }
+
+  function initAutoSliders() {
+    if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) {
+      return;
+    }
+
+    document.querySelectorAll("[data-auto-slider]").forEach(function (slider) {
+      var originalCount = parseInt(slider.getAttribute("data-slide-count"), 10) || 0;
+      var slides = Array.prototype.slice.call(slider.children);
+      var currentIndex = 0;
+
+      if (originalCount < 2 || slides.length <= originalCount) {
+        return;
+      }
+
+      function slideLeft(index) {
+        var slide = slides[index];
+        return slide ? slide.offsetLeft - slider.offsetLeft : 0;
+      }
+
+      window.setInterval(function () {
+        if (!document.body.contains(slider)) {
+          return;
+        }
+
+        currentIndex += 1;
+        slider.scrollTo({
+          left: slideLeft(currentIndex),
+          behavior: "smooth"
+        });
+
+        if (currentIndex === originalCount) {
+          window.setTimeout(function () {
+            slider.scrollTo({
+              left: slideLeft(0),
+              behavior: "auto"
+            });
+            currentIndex = 0;
+          }, 850);
+        }
+      }, 3000);
     });
   }
 
@@ -478,7 +523,6 @@
     applySocialLinks();
     renderFeaturedDrop();
     renderHomeProducts();
-    renderEditorialImages("[data-editorial-slider]", "editorial-slide");
     renderEditorialImages("[data-editorial-grid]", "insta-tile");
     renderCatalog();
     renderProductDetail();
@@ -487,6 +531,7 @@
 
   ready(function () {
     renderDynamicContent();
+    initAutoSliders();
 
     var header = document.querySelector("[data-header]");
     var scrollTicking = false;
@@ -535,10 +580,24 @@
       });
     }
 
+    if (menu) {
+      menu.addEventListener("click", function (event) {
+        if (event.target === menu) {
+          setMenu(false);
+        }
+      });
+    }
+
     document.querySelectorAll(".mobile-nav-link").forEach(function (link) {
       link.addEventListener("click", function () {
         setMenu(false);
       });
+    });
+
+    document.addEventListener("keydown", function (event) {
+      if (event.key === "Escape") {
+        setMenu(false);
+      }
     });
 
     var searchTrigger = document.querySelector("[data-search-trigger]");
