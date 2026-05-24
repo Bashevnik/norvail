@@ -246,7 +246,7 @@
   function renderCatalog(mode) {
     renderProductCards("[data-products-grid]", sortedProducts(mode));
     document.querySelectorAll("[data-products-count]").forEach(function (node) {
-      node.textContent = PRODUCTS.length + " Products";
+      node.textContent = PRODUCTS.length + " products";
     });
   }
 
@@ -765,6 +765,34 @@
         renderCatalog(sortSelect.value);
       });
     }
+
+    var productsGrid = document.querySelector("[data-products-grid]");
+    document.querySelectorAll("[data-grid-view]").forEach(function (button) {
+      button.addEventListener("click", function () {
+        var view = button.getAttribute("data-grid-view") || "2";
+        if (productsGrid) {
+          productsGrid.setAttribute("data-grid-view", view);
+        }
+        document.querySelectorAll("[data-grid-view]").forEach(function (option) {
+          var active = option === button;
+          option.classList.toggle("is-active", active);
+          option.setAttribute("aria-pressed", active ? "true" : "false");
+        });
+      });
+    });
+
+    document.querySelectorAll(".collection-filter-menu").forEach(function (menu) {
+      menu.addEventListener("toggle", function () {
+        if (!menu.open) {
+          return;
+        }
+        document.querySelectorAll(".collection-filter-menu").forEach(function (otherMenu) {
+          if (otherMenu !== menu) {
+            otherMenu.open = false;
+          }
+        });
+      });
+    });
 
     document.querySelectorAll("[data-qty-action]").forEach(function (button) {
       button.addEventListener("click", function () {

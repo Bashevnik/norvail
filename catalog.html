@@ -57,51 +57,47 @@
     </section>
 
     <section class="catalog-shell">
-      <aside class="filters-panel" data-filters aria-label="Catalog filters">
-        <div class="filter-header">
-          <h2 data-i18n="filters">Filters</h2>
-          <button type="button" data-filter-close aria-label="Close filters">&times;</button>
-        </div>
-        <form class="filters-form">
-          <fieldset>
-            <legend data-i18n="price_range">Price Range</legend>
-            <div class="price-range" data-price-range>
-              <div class="range-values">
-                <span><span data-i18n="min">MIN</span> <output data-range-min-output>900</output> UAH</span>
-                <span><span data-i18n="max">MAX</span> <output data-range-max-output>4000</output> UAH</span>
-              </div>
-              <div class="range-slider">
-                <input type="range" min="0" max="4200" value="900" step="50" data-range-min aria-label="Minimum price">
-                <input type="range" min="0" max="4200" value="4000" step="50" data-range-max aria-label="Maximum price">
-              </div>
-            </div>
-          </fieldset>
-          <fieldset>
-            <legend data-i18n="availability">Availability</legend>
-            <label class="toggle-row"><input type="checkbox" checked><span></span><strong data-i18n="in_stock_only">In Stock Only</strong></label>
-          </fieldset>
-          <fieldset>
-            <legend data-i18n="category">Category</legend>
-            <label class="checkbox-row"><input type="checkbox" checked><span>Tops</span></label>
-            <label class="checkbox-row"><input type="checkbox" checked><span>Pants</span></label>
-            <label class="checkbox-row"><input type="checkbox" checked><span>Tracksuit</span></label>
-            <label class="checkbox-row"><input type="checkbox" checked><span>Shorts</span></label>
-          </fieldset>
-        </form>
-      </aside>
-
       <div class="catalog-content">
-        <div class="sort-bar reveal">
-          <button class="filter-toggle magnetic" type="button" data-filter-toggle data-i18n="filters">Filters</button>
-          <span data-products-count>5 Products</span>
-          <label class="sr-only" for="sort-products" data-i18n="sort_products">Sort products</label>
-          <select id="sort-products" data-sort-products>
-            <option value="newest" data-i18n="newest">Newest</option>
-            <option value="price-asc" data-i18n="price_low_high">Price Low&rarr;High</option>
-            <option value="price-desc" data-i18n="price_high_low">Price High&rarr;Low</option>
-          </select>
+        <div class="collection-toolbar reveal" aria-label="Collection controls">
+          <div class="collection-toolbar__group">
+            <details class="collection-filter-menu">
+              <summary>Availability <span aria-hidden="true">▾</span></summary>
+              <div class="collection-filter-popover">
+                <label class="toggle-row"><input type="checkbox" checked><span></span><strong data-i18n="in_stock_only">In Stock Only</strong></label>
+              </div>
+            </details>
+            <details class="collection-filter-menu">
+              <summary>Price <span aria-hidden="true">▾</span></summary>
+              <div class="collection-filter-popover collection-filter-popover--wide">
+                <div class="price-range" data-price-range>
+                  <div class="range-values">
+                    <span><span data-i18n="min">MIN</span> <output data-range-min-output>900</output> UAH</span>
+                    <span><span data-i18n="max">MAX</span> <output data-range-max-output>4000</output> UAH</span>
+                  </div>
+                  <div class="range-slider">
+                    <input type="range" min="0" max="4200" value="900" step="50" data-range-min aria-label="Minimum price">
+                    <input type="range" min="0" max="4200" value="4000" step="50" data-range-max aria-label="Maximum price">
+                  </div>
+                </div>
+              </div>
+            </details>
+          </div>
+          <div class="collection-toolbar__group collection-toolbar__group--right">
+            <span class="collection-count" data-products-count>5 products</span>
+            <label class="sr-only" for="sort-products" data-i18n="sort_products">Sort products</label>
+            <select class="collection-sort" id="sort-products" data-sort-products aria-label="Sort products">
+              <option value="newest" data-i18n="newest">Newest</option>
+              <option value="price-asc" data-i18n="price_low_high">Price Low&rarr;High</option>
+              <option value="price-desc" data-i18n="price_high_low">Price High&rarr;Low</option>
+            </select>
+            <div class="grid-view-switcher" role="group" aria-label="Grid view">
+              <button type="button" data-grid-view="1" aria-label="1 column view">□</button>
+              <button class="is-active" type="button" data-grid-view="2" aria-label="2 column view" aria-pressed="true">⊞</button>
+              <button type="button" data-grid-view="4" aria-label="4 column view">⣿</button>
+            </div>
+          </div>
         </div>
-        <div class="product-grid catalog-grid" data-products-grid></div>
+        <div class="product-grid catalog-grid" data-products-grid data-grid-view="2"></div>
       </div>
     </section>
   </main>
