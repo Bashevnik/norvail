@@ -27,6 +27,8 @@
     }
   ];
 
+  var FEATURED_DROP_IMAGE = "assets/images/main_img.jpg";
+
   var PRODUCTS = [
     {
       slug: "black-imprint-noirveil-pants",
@@ -263,7 +265,7 @@
 
     if (media) {
       media.innerHTML = "";
-      appendProductImage(media, product, product.images[0], "lazy");
+      appendProductImage(media, product, FEATURED_DROP_IMAGE, "lazy");
     }
     if (title) {
       title.textContent = product.name;
