@@ -82,6 +82,7 @@
       price: "from ₴1,950.00",
       priceValue: 1950,
       images: [
+        "products/main_costume.jpg",
         "products/Tracksuit Noirveil Reflect.jpg",
         "products/Tracksuit Noirveil Reflect2.jpg",
         "products/Tracksuit Noirveil Reflect3.jpg",
